@@ -4,7 +4,6 @@ import (
 	"demo/models"
 	"fmt"
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/storage"
@@ -57,9 +56,7 @@ func (g *GameScene) music() {
 }
 
 func (g *GameScene) startscene() {
-	a := app.New()
-	w := a.NewWindow("Hello")
-
+	
 	image := canvas.NewImageFromURI(storage.NewFileURI("./assets/gensokyo.png"))
 	image.Resize(fyne.NewSize(1366, 768))
 	image.Move(fyne.NewPos(0, 0))
@@ -80,8 +77,8 @@ func (g *GameScene) startscene() {
 
 	go g.music()
 
-	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) {
-		go m.Move(e)
+	g.window.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) {
+		go m.Move(e, g.container)
 		fmt.Println("te")
 	})
 

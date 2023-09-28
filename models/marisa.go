@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 )
@@ -19,7 +20,7 @@ func NewMarisa(x float32, y float32, img *canvas.Image) *Marisa {
 
 }
 
-func (m *Marisa) Move(e *fyne.KeyEvent) {
+func (m *Marisa) Move(e *fyne.KeyEvent, container *fyne.Container) {
 	switch e.Name {
 	case fyne.KeyUp:
 		m.Y -= 10
@@ -30,6 +31,7 @@ func (m *Marisa) Move(e *fyne.KeyEvent) {
 	case fyne.KeyRight:
 		m.X += 10
 	}
+	fmt.Println(e.Name)
 	m.mari.Move(fyne.NewPos(m.X, m.Y))
-	m.mari.Refresh()
+	container.Refresh()
 }
