@@ -31,7 +31,7 @@ func (m *Marisa) Move(e *fyne.KeyEvent, container *fyne.Container) {
 	case fyne.KeyRight:
 		m.X += 10
 	}
-	fmt.Println(e.Name)
+	fmt.Println(m.Y, m.X)
 	m.mari.Move(fyne.NewPos(m.X, m.Y))
 	container.Refresh()
 }

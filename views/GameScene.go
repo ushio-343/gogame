@@ -12,6 +12,7 @@ import (
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/speaker"
 	"log"
+	"math"
 	"os"
 	"time"
 )
@@ -20,6 +21,7 @@ type GameScene struct {
 	window    fyne.Window
 	app       fyne.App
 	container *fyne.Container
+	status    bool
 }
 
 var c *models.Chen
@@ -27,11 +29,11 @@ var m *models.Marisa
 
 func NewGameScene(window fyne.Window, app fyne.App) *GameScene {
 
-	return &GameScene{window: window, app: app, container: container.NewWithoutLayout()}
+	return &GameScene{window: window, app: app, container: container.NewWithoutLayout(), status: true}
 }
 
 func (g *GameScene) music() {
-	for {
+	for g.status {
 		file, err := os.Open("assets/backmusic.mp3")
 		if err != nil {
 			log.Panicln(err)
@@ -56,7 +58,7 @@ func (g *GameScene) music() {
 }
 
 func (g *GameScene) startscene() {
-	
+
 	image := canvas.NewImageFromURI(storage.NewFileURI("./assets/gensokyo.png"))
 	image.Resize(fyne.NewSize(1366, 768))
 	image.Move(fyne.NewPos(0, 0))
@@ -79,8 +81,21 @@ func (g *GameScene) startscene() {
 
 	g.window.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) {
 		go m.Move(e, g.container)
-		fmt.Println("te")
 	})
+
+	go func() {
+		for {
+			distancia := math.Sqrt(math.Pow(float64(m.X-c.PostX), 2) + math.Pow(float64(m.Y-c.PostY), 2))
+			fmt.Println(distancia)
+			if distancia < 25 {
+				// If they are, switch to another window
+				gameover := NewGameOver(g.window, g.app)
+				gameover.Render()
+				break
+			}
+
+		}
+	}()
 
 	stopbotton := widget.NewButton("detener el juego", g.StopGame)
 	stopbotton.Resize(fyne.NewSize(150, 30))
@@ -99,4 +114,8 @@ func (g *GameScene) StopGame() {
 
 func (g *GameScene) ExitGame() {
 	g.window.Close()
+}
+
+func (g *GameScene) Setstatus(status bool) {
+	g.status = status
 }

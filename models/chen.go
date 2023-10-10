@@ -8,15 +8,15 @@ import (
 )
 
 type Chen struct {
-	postX, postY float32
+	PostX, PostY float32
 	status       bool
 	che          *canvas.Image
 }
 
 func NewChen(postx float32, posy float32, img *canvas.Image) *Chen {
 	return &Chen{
-		postX:  postx,
-		postY:  posy,
+		PostX:  postx,
+		PostY:  posy,
 		status: true,
 		che:    img,
 	}
@@ -28,16 +28,16 @@ func (c *Chen) Run() {
 	var incY float32 = 50
 	c.status = true
 	for c.status {
-		if c.postX < 50 || c.postX > 1250 {
+		if c.PostX < 50 || c.PostX > 1250 {
 			incX *= -1
 		}
-		if c.postY < 50 || c.postY > 670 {
+		if c.PostY < 50 || c.PostY > 670 {
 			incY *= -1
 		}
-		c.postX += incX
-		c.postY += incY
-		fmt.Println(c.postX, c.postY)
-		c.che.Move(fyne.NewPos(c.postX, c.postY))
+		c.PostX += incX
+		c.PostY += incY
+		fmt.Println(c.PostX, c.PostY)
+		c.che.Move(fyne.NewPos(c.PostX, c.PostY))
 		time.Sleep((500 * time.Millisecond))
 	}
 }
